@@ -7,7 +7,7 @@
 ####
 
 team_name = 'Seth Bercichs Team' # Only 10 chars displayed.
-strategy_name = 'Smart Collude until Betrayed using Predictions'
+strategy_name = 'Collude until Double Betray. Then attacks 10 times before colluding again'
 strategy_description = 'It will collude until betrayed. It predicts if they are going to switch from colluding to betraying and the other way around'
     
 def move(my_history, their_history, my_score, their_score):
@@ -28,24 +28,15 @@ def move(my_history, their_history, my_score, their_score):
     
     if len(my_history) <= 1:
         return 'c'
-    if len(my_history) == 2:
+    if len(my_history) >= 100 and len(my_history) < 110:
+        return 'b'
+    if len(my_history) >= 110 and len(my_history) < 115:
+        return 'c'
+    if len(my_history) >= 2:
         if their_history[-1] == 'b' and their_history[-2] == 'b': #If they start off betraying off the back, I will betray back.
             return 'b'
         else:
             return 'c'
-    if len(my_history) >= 3:
-        if their_history[-1] == 'b' and their_history[-2] == 'b' and their_history[-3] == 'b': #If the other player is only betraying
-            return 'b'
-        if their_history[-1] == 'b' and their_history[-2] == 'c' and their_history[-3] == 'b': #If they're alternating b,c,b then I will copy their next turn
-            return 'c'
-        if their_history[-1] == 'c' and their_history[-2] == 'b' and their_history[-3] == 'c': #If they're alternating c,b,c then I will copy their next turn
-            return 'b'
-        if their_history[-1] == 'c' and their_history[-2] == 'c' and their_history[-3] == 'c': #If they're only colluding, I will collude with them.
-            return 'c'
-        if their_history[-1] == 'c' and their_history[-2] == 'c' and their_history[-3] == 'b': #If they're starting to colluding, I will collude.
-            return 'c'
-        if their_history[-1] == 'b' and their_history[-2] == 'b' and their_history[-3] == 'c': #If they're starting to betray, I will betray
-            return 'b'
     return 'c'
 
 def test_move(my_history, their_history, my_score, their_score, result):
